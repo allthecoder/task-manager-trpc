@@ -28,6 +28,7 @@ export default async function TasksPage() {
                 <Link href={`/tasks/${t.id}`}>Edit</Link>
             </p>
             <TaskDeleteButton taskId={t.id} />
+            <small>Created at: {new Date(t.createdAt).toLocaleString()}</small>
           </li>
         ))}
       </ul>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { router, publicProcedure } from "./trpc";
 
 type Task = {
@@ -48,7 +49,10 @@ export const taskRouter = router({
       const task = tasks.find((t) => t.id === input.id);
 
       if (!task) {
-        throw new Error("Task not found");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
       }
 
       task.title = input.title;
@@ -63,7 +67,10 @@ export const taskRouter = router({
       const index = tasks.findIndex((t) => t.id === input.id);
 
       if (index === -1) {
-        throw new Error("Task not found");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
       }
 
       const deleted = tasks.splice(index, 1);
@@ -77,7 +84,10 @@ export const taskRouter = router({
     const task = tasks.find((t) => t.id === input.id);
 
     if (!task) {
-      throw new Error("Task not found");
+      throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task not found",
+        });
     }
 
     return task;
