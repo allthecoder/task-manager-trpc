@@ -8,7 +8,8 @@ type Task = {
   createdAt: Date;
 };
 
-const tasks: Task[] = [];
+const globalForTasks = globalThis as unknown as { tasks?: Task[] };
+const tasks = (globalForTasks.tasks ??= []);
 
 export const taskRouter = router({
   list: publicProcedure.query(() => {

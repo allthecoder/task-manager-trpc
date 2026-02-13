@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { trpc } from "@/trpc/client";
 
+
 export default function NewTaskPage() {
   const router = useRouter();
 
@@ -14,6 +15,7 @@ export default function NewTaskPage() {
   const createTask = trpc.task.create.useMutation({
     onSuccess: () => {
       router.push("/tasks");
+        router.refresh();
     },
     onError: (err) => {
       setError(err.message);
