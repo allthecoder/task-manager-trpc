@@ -3,6 +3,8 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { appRouter } from "@/server/root";
+import { TaskDeleteButton } from "./taskDeleteButton";
+
 
 export default async function TasksPage() {
   const caller = appRouter.createCaller({});
@@ -22,6 +24,7 @@ export default async function TasksPage() {
           <li key={t.id}>
             <strong>{t.title}</strong>
             {t.description ? <p>{t.description}</p> : null}
+            <TaskDeleteButton taskId={t.id} />
           </li>
         ))}
       </ul>
