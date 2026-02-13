@@ -3,11 +3,17 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { appRouter } from "@/server/root";
-import { TaskDeleteButton } from "./taskDeleteButton";
+import { TaskList } from "./TaskList";
 
 export default async function TasksPage() {
   const caller = appRouter.createCaller({});
-  const tasks = await caller.task.list();
+
+  const PAGE_SIZE = 5;
+
+  const firstPage = await caller.task.listInfinite({
+    limit: PAGE_SIZE,
+    cursor: null,
+  });
 
   return (
     <main className="container">
@@ -24,40 +30,17 @@ export default async function TasksPage() {
 
       <section className="card">
         <div className="cardBody">
-          <div style={{ width: "100%" }}>
-            {tasks.length === 0 ? (
-              <p className="subtitle" style={{ margin: 0 }}>
-                No tasks yet.
-              </p>
-            ) : (
-              <div className="stack">
-                {tasks.map((t) => (
-                  <div key={t.id} className="taskCard">
-                    <div className="taskTop">
-                      <div>
-                        <p className="taskTitle">{t.title}</p>
-                        {t.description ? (
-                          <p className="taskDesc">{t.description}</p>
-                        ) : null}
-                      </div>
-
-                      <div className="taskMeta">
-                        Created at: {new Date(t.createdAt).toLocaleString()}
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <Link className="button" href={`/tasks/${t.id}`}>
-                        Edit
-                      </Link>
-
-                      <TaskDeleteButton taskId={t.id} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {firstPage.items.length === 0 ? (
+            <p className="subtitle" style={{ margin: 0 }}>
+              No tasks yet.
+            </p>
+          ) : (
+            <TaskList
+              initialItems={firstPage.items}
+              initialNextCursor={firstPage.nextCursor}
+              pageSize={PAGE_SIZE}
+            />
+          )}
         </div>
       </section>
     </main>

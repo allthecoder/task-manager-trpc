@@ -237,5 +237,71 @@ a:hover {
   color: #064645;
 }
 
+.scrollBoxWindow {
+  width: 100%;
+  height: 600px;        /* ~5 cards */
+  overflow-y: auto;     
+  padding-right: 6px;
+  border-radius: 14px;
+}
+
+.taskCard {
+  height: 110px;          
+  width: 100%;
+  display: flex;           
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  overflow: hidden;
+}
+
+.taskTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.taskTop > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.taskTitle {
+  font-weight: 800;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.2;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.taskDesc {
+  color: var(--muted);
+  margin: 4px 0 0;
+  line-height: 1.25;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
+
 
     

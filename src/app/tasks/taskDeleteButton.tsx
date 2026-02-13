@@ -6,13 +6,17 @@ import { useState } from "react";
 
 export function TaskDeleteButton({ taskId }: { taskId: string }) {
   const router = useRouter();
+  const utils = trpc.useUtils();
+
   const [message, setMessage] = useState<string>("");
   const [isOk, setIsOk] = useState<boolean>(false);
 
   const deleteTask = trpc.task.delete.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       setIsOk(true);
       setMessage("Deleted successfully.");
+      await utils.task.listInfinite.invalidate();
+      await utils.task.list.invalidate();
       router.refresh();
     },
     onError: (err) => {

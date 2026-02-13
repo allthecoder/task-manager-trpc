@@ -14,8 +14,40 @@ const tasks = (globalForTasks.tasks ??= []);
 
 export const taskRouter = router({
   list: publicProcedure.query(() => {
-    return tasks;
+    // newest first looks better for infinite scroll
+    return [...tasks].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }),
+
+  listInfinite: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(50).default(10),
+        cursor: z.number().nullish(), // offset-based cursor (simple)
+      })
+    )
+    .query(({ input }) => {
+      const sorted = [...tasks].sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+      );
+
+      const start = input.cursor ?? 0;
+      const end = start + input.limit;
+
+      const items = sorted.slice(start, end);
+      const nextCursor = end < sorted.length ? end : null;
+
+      return { items, nextCursor };
+    }),
+
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ input }) => {
+      const task = tasks.find((t) => t.id === input.id);
+      if (!task) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Task not found" });
+      }
+      return task;
+    }),
 
   create: publicProcedure
     .input(
@@ -31,9 +63,7 @@ export const taskRouter = router({
         description: input.description,
         createdAt: new Date(),
       };
-
       tasks.push(newTask);
-
       return newTask;
     }),
 
@@ -47,17 +77,11 @@ export const taskRouter = router({
     )
     .mutation(({ input }) => {
       const task = tasks.find((t) => t.id === input.id);
-
       if (!task) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Task not found",
-        });
+        throw new TRPCError({ code: "NOT_FOUND", message: "Task not found" });
       }
-
       task.title = input.title;
       task.description = input.description;
-
       return task;
     }),
 
@@ -65,32 +89,10 @@ export const taskRouter = router({
     .input(z.object({ id: z.string() }))
     .mutation(({ input }) => {
       const index = tasks.findIndex((t) => t.id === input.id);
-
       if (index === -1) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Task not found",
-        });
+        throw new TRPCError({ code: "NOT_FOUND", message: "Task not found" });
       }
-
       const deleted = tasks.splice(index, 1);
-
       return deleted[0];
     }),
-
-  getById: publicProcedure
-  .input(z.object({ id: z.string() }))
-  .query(({ input }) => {
-    const task = tasks.find((t) => t.id === input.id);
-
-    if (!task) {
-      throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Task not found",
-        });
-    }
-
-    return task;
-  }),
-
 });
