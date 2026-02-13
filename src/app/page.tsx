@@ -1,26 +1,61 @@
-import { appRouter } from "@/server/root";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export default async function Home() {
+import Link from "next/link";
+import { appRouter } from "@/server/root";
+import { TaskDeleteButton } from "./taskDeleteButton";
+
+export default async function TasksPage() {
   const caller = appRouter.createCaller({});
   const tasks = await caller.task.list();
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Task List</h1>
+    <main className="container">
+      <div className="header">
+        <div>
+          <h1 className="title">Tasks</h1>
+          <p className="subtitle">A simple in-memory task manager using Next.js + tRPC.</p>
+        </div>
 
-      {tasks.length === 0 && <p>No tasks yet.</p>}
+        <Link className="button" href="/tasks/new">
+          + Create task
+        </Link>
+      </div>
 
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id} style={{ marginBottom: "1rem" }}>
-            <strong>{task.title}</strong>
-            {task.description && <p>{task.description}</p>}
-            <small>
-              Created at: {task.createdAt.toLocaleString()}
-            </small>
-          </li>
-        ))}
-      </ul>
+      <section className="card">
+        <div className="cardBody">
+          {tasks.length === 0 ? (
+            <p className="subtitle" style={{ margin: 0 }}>
+              No tasks yet.
+            </p>
+          ) : (
+            <div className="stack">
+              {tasks.map((t) => (
+                <div key={t.id} className="taskCard">
+                  <div className="taskTop">
+                    <div>
+                      <p className="taskTitle">{t.title}</p>
+                      {t.description ? <p className="taskDesc">{t.description}</p> : null}
+                    </div>
+
+                    <div className="taskMeta">
+                      Created at: {new Date(t.createdAt).toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <Link className="button" href={`/tasks/${t.id}`}>
+                      Edit
+                    </Link>
+
+                    <TaskDeleteButton taskId={t.id} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }

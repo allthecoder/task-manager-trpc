@@ -1,27 +1,33 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import Link from "next/link";
 import { appRouter } from "@/server/root";
 import { EditTaskForm } from "./EditTaskForm";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+type PageProps = {
+  params: { id: string } | Promise<{ id: string }>;
+};
 
-export default async function TaskEditPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default async function TaskEditPage(props: PageProps) {
+  const resolvedParams = await props.params;
+  const id = resolvedParams.id;
 
   const caller = appRouter.createCaller({});
   const task = await caller.task.getById({ id });
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <p>
-        <Link href="/tasks">← Back to tasks</Link>
-      </p>
+    <main className="container">
+      <div className="header">
+        <div>
+          <h1 className="title">Edit task</h1>
+          <p className="subtitle">Update title and description.</p>
+        </div>
 
-      <h1>Edit Task</h1>
+        <Link className="button" href="/tasks">
+          Back
+        </Link>
+      </div>
 
       <EditTaskForm
         id={task.id}

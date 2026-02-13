@@ -38,38 +38,49 @@ export default function NewTaskPage() {
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Create Task</h1>
-
-      <form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Title</label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ width: "100%" }}
-          />
+    <main className="container">
+        <div className="header">
+        <div>
+            <h1 className="title">Create task</h1>
+            <p className="subtitle">Add a new task to the in-memory list.</p>
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            style={{ width: "100%" }}
-          />
-        </div>
-
-        {error && (
-          <p style={{ color: "red", marginBottom: "1rem" }}>
-            {error}
-          </p>
-        )}
-
-        <button type="submit" disabled={createTask.isPending}>
-          {createTask.isPending ? "Creating..." : "Create Task"}
+        <button className="button" onClick={() => router.push("/tasks")}>
+            Back
         </button>
-      </form>
+        </div>
+
+        <section className="card">
+        <div className="cardBody">
+            <form onSubmit={handleSubmit} className="form">
+            <div>
+                <div className="label">Title</div>
+                <input
+                className="input"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                />
+            </div>
+
+            <div>
+                <div className="label">Description</div>
+                <textarea
+                className="textarea"
+                value={description}
+                placeholder="Optional details..."
+                onChange={(e) => setDescription(e.target.value)}
+                />
+            </div>
+
+            {error ? <p className="messageError">{error}</p> : null}
+
+            <button className="button" type="submit" disabled={createTask.isPending}>
+                {createTask.isPending ? "Creating..." : "Create Task"}
+            </button>
+            </form>
+        </div>
+        </section>
     </main>
   );
+
 }

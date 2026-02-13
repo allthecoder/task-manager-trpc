@@ -2,7 +2,238 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: sans-serif;
+:root {
+  --bg: #28f8ee;   
+  --surface: #ffffff; 
+  --surface2: #f6fbfb;
+  --text: #062a2a;  
+  --muted: #2a5c5c;
+  --border: rgba(6, 42, 42, 0.18);
+  --shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+
+  --accent: #0b6b68;      
+  --accent2: #0aa6a0;
+  --danger: #b42318;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.card {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.cardBody {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+}
+
+.taskCard {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.taskTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.taskTitle {
+  font-weight: 800;
+  font-size: 16px;
+  margin: 0;
+}
+
+.taskMeta {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.taskDesc {
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button {
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.button:hover {
+  border-color: rgba(6, 42, 42, 0.3);
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonDanger {
+  border-color: rgba(180, 35, 24, 0.35);
+  color: var(--danger);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+  width: min(680px, 100%);
+
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  outline: none;
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: rgba(124, 92, 255, 0.6);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.15);
+}
+
+.messageError {
+  color: #ffb3b3;
+  margin: 0;
+}
+
+.messageOk {
+  color: #b8ffcf;
+  margin: 0;
+}
+
+.alert {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+
+.alertError {
+  background: rgba(180, 35, 24, 0.12);
+  border-color: rgba(180, 35, 24, 0.35);
+  color: #7a0f08;
+}
+
+.alertOk {
+  background: rgba(11, 107, 104, 0.12);
+  border-color: rgba(11, 107, 104, 0.35);
+  color: #064645;
+}
+
+
     

@@ -3,35 +3,68 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { appRouter } from "@/server/root";
-import { TaskDeleteButton } from "./taskDeleteButton";
-
+import { TaskDeleteButton } from "./taskDeleteButton"; // adjust if your file name differs
 
 export default async function TasksPage() {
   const caller = appRouter.createCaller({});
   const tasks = await caller.task.list();
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Tasks</h1>
-      <p>
-        <Link href="/tasks/new">Create a task</Link>
-      </p>
+    <main className="container">
+      <div className="header">
+        <div>
+          <h1 className="title">Tasks</h1>
+          <p className="subtitle">A simple in-memory task manager.</p>
+        </div>
 
-      {tasks.length === 0 && <p>No tasks yet.</p>}
+        <Link className="button" href="/tasks/new">
+          + Create task
+        </Link>
+      </div>
 
-      <ul>
-        {tasks.map((t) => (
-          <li key={t.id}>
-            <strong>{t.title}</strong>
-            {t.description ? <p>{t.description}</p> : null}
-            <p>
-                <Link href={`/tasks/${t.id}`}>Edit</Link>
+      <section className="card">
+        <div className="cardBody">
+          {tasks.length === 0 ? (
+            <p className="subtitle" style={{ margin: 0 }}>
+              No tasks yet.
             </p>
-            <TaskDeleteButton taskId={t.id} />
-            <small>Created at: {new Date(t.createdAt).toLocaleString()}</small>
-          </li>
-        ))}
-      </ul>
+          ) : (
+            <div
+              className="stack"
+              style={{
+                maxHeight: "65vh",
+                overflowY: "auto",
+                paddingRight: "6px",
+              }}
+            >
+              {tasks.map((t) => (
+                <div key={t.id} className="taskCard">
+                  <div className="taskTop">
+                    <div>
+                      <p className="taskTitle">{t.title}</p>
+                      {t.description ? (
+                        <p className="taskDesc">{t.description}</p>
+                      ) : null}
+                    </div>
+
+                    <div className="taskMeta">
+                      Created at: {new Date(t.createdAt).toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <Link className="button" href={`/tasks/${t.id}`}>
+                      Edit
+                    </Link>
+
+                    <TaskDeleteButton taskId={t.id} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }
