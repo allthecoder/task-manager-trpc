@@ -70,4 +70,17 @@ export const taskRouter = router({
 
       return deleted[0];
     }),
+
+  getById: publicProcedure
+  .input(z.object({ id: z.string() }))
+  .query(({ input }) => {
+    const task = tasks.find((t) => t.id === input.id);
+
+    if (!task) {
+      throw new Error("Task not found");
+    }
+
+    return task;
+  }),
+
 });

@@ -24,6 +24,9 @@ export default async function TasksPage() {
           <li key={t.id}>
             <strong>{t.title}</strong>
             {t.description ? <p>{t.description}</p> : null}
+            <p>
+                <Link href={`/tasks/${t.id}`}>Edit</Link>
+            </p>
             <TaskDeleteButton taskId={t.id} />
           </li>
         ))}
