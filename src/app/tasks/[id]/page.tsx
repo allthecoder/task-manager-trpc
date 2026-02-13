@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { appRouter } from "@/server/root";
 import { EditTaskForm } from "./EditTaskForm";
 
@@ -10,11 +11,16 @@ type PageProps = {
 };
 
 export default async function TaskEditPage(props: PageProps) {
-  const resolvedParams = await props.params;
-  const id = resolvedParams.id;
+  const { id } = await props.params;
 
   const caller = appRouter.createCaller({});
-  const task = await caller.task.getById({ id });
+
+  let task: Awaited<ReturnType<typeof caller.task.getById>>;
+  try {
+    task = await caller.task.getById({ id });
+  } catch {
+    notFound();
+  }
 
   return (
     <main className="container">

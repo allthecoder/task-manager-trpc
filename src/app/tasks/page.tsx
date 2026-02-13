@@ -3,7 +3,7 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { appRouter } from "@/server/root";
-import { TaskDeleteButton } from "./taskDeleteButton"; // adjust if your file name differs
+import { TaskDeleteButton } from "./taskDeleteButton";
 
 export default async function TasksPage() {
   const caller = appRouter.createCaller({});
@@ -24,45 +24,40 @@ export default async function TasksPage() {
 
       <section className="card">
         <div className="cardBody">
-          {tasks.length === 0 ? (
-            <p className="subtitle" style={{ margin: 0 }}>
-              No tasks yet.
-            </p>
-          ) : (
-            <div
-              className="stack"
-              style={{
-                maxHeight: "65vh",
-                overflowY: "auto",
-                paddingRight: "6px",
-              }}
-            >
-              {tasks.map((t) => (
-                <div key={t.id} className="taskCard">
-                  <div className="taskTop">
-                    <div>
-                      <p className="taskTitle">{t.title}</p>
-                      {t.description ? (
-                        <p className="taskDesc">{t.description}</p>
-                      ) : null}
+          <div style={{ width: "100%" }}>
+            {tasks.length === 0 ? (
+              <p className="subtitle" style={{ margin: 0 }}>
+                No tasks yet.
+              </p>
+            ) : (
+              <div className="stack">
+                {tasks.map((t) => (
+                  <div key={t.id} className="taskCard">
+                    <div className="taskTop">
+                      <div>
+                        <p className="taskTitle">{t.title}</p>
+                        {t.description ? (
+                          <p className="taskDesc">{t.description}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="taskMeta">
+                        Created at: {new Date(t.createdAt).toLocaleString()}
+                      </div>
                     </div>
 
-                    <div className="taskMeta">
-                      Created at: {new Date(t.createdAt).toLocaleString()}
+                    <div className="row">
+                      <Link className="button" href={`/tasks/${t.id}`}>
+                        Edit
+                      </Link>
+
+                      <TaskDeleteButton taskId={t.id} />
                     </div>
                   </div>
-
-                  <div className="row">
-                    <Link className="button" href={`/tasks/${t.id}`}>
-                      Edit
-                    </Link>
-
-                    <TaskDeleteButton taskId={t.id} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </main>
